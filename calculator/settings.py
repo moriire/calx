@@ -1,12 +1,12 @@
 import string
-THEME="DarkTeal10"
+THEME="DarkPurple4"
 LOOKS=(
-    "DarkTeal10",
-    "DarkTeal10",
-    "DarkGrey2",
+    "DarkPurple4",
+    "DarkPurple4",
+    "DarkPurple4",
     "DarkPurple4",
     "LightGreen6",
-    "DarkTeal10",
+    "DarkPurple4",
     "DarkBlack1"
     )
 FONT=('helvetica',15)

@@ -9,9 +9,7 @@ def change(field, new_val):
     with open('settings.py') as f:
         tok = field
         data = f.read()
-        print(data)
         new_data = data.replace(str(tok), str(new_val))
-        print(new_data)
         with open('settings.py', "w+") as fw:
             fw.write(new_data)
             return 1

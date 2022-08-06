@@ -51,7 +51,7 @@ gui=[
    
     [s.Text('IBM Abdulsalam - For Educational Purpose', enable_events=True, key="redirect", tooltip="Click to view my profile")]
     ]
-win=s.Window('Calx v3.1',size=(320,540)).Layout(gui)
+win=s.Window('Calx v3.1.0',size=(320,540)).Layout(gui)
 key_entered=''
 while True:
     button, val=win.Read()
