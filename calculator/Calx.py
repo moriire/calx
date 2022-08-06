@@ -1,51 +1,99 @@
 import PySimpleGUI as s
 import math
-size=(6,3)
-font=('helvetica',10)
+import sys
+import webbrowser as wb
+size=(7,3)
+import settings
+MENU_COLOR = s.LOOK_AND_FEEL_TABLE[settings.THEME]
+def change(field, new_val):
+    with open('settings.py') as f:
+        tok = field
+        data = f.read()
+        print(data)
+        new_data = data.replace(str(tok), str(new_val))
+        print(new_data)
+        with open('settings.py', "w+") as fw:
+            fw.write(new_data)
+            return 1
+        
+change_look=settings.THEME
+s.change_look_and_feel(change_look)
+figures=[]
+for index, i in enumerate(range(0, len(settings.FIELDS), 3)):
+    x = [s.ReadButton(settings.FIELDS[j], size=size) for j in range(i, i+3)]
+    x+=[s.ReadButton(tuple(settings.ARITHMETIC)[index], size=size)]
+    figures.append(x)
+
 gui=[
-    [s.InputText('',key='inval', font=('helvetica',22))],
-    [s.ReadButton('1', size=size),s.ReadButton('2', size=size), s.ReadButton('3', size=size),s.ReadButton('+', size=size)],
-    [s.ReadButton('4', size=size), s.ReadButton('5', size=size), s.ReadButton('6', size=size), s.ReadButton('-', size=size)],
-    [s.ReadButton('7', size=size), s.ReadButton('8', size=size), s.ReadButton('9', size=size), s.ReadButton('*', size=size)],
-    [s.ReadButton('0', size=size), s.ReadButton('.', size=size), s.ReadButton('sqrt', size=size), s.ReadButton('/', size=size)],
-    [s.ReadButton('tan', size=size),s.ReadButton('cos', size=size),s.ReadButton('sin', size=size),
-     s.ReadButton('(', size=size)],
-    [s.ReadButton('log', size=size),s.ReadButton('e', size=size),s.ReadButton('pi', size=size),s.ReadButton(')', size=size)],
-    [s.ReadButton('ANS', size=(22,3)),s.ReadButton('C', size=size)],
+    [s.Menu([["Settings", ["theme",[settings.LOOKS], "Exit"]],
+             ["About",["Developer", "Versions"]]
+            ], background_color=MENU_COLOR['BACKGROUND'], text_color=MENU_COLOR['TEXT'])
+            ],
+    [s.InputText('',key='inval', font=settings.FONT)],
+    figures,
+    [
+        s.ReadButton(w, size=size) for w in settings.WAVE
+    ],
+    [s.ReadButton('ANS', size=(16,3)),s.ReadButton('C', size=size),
+    s.ReadButton('CE', size=size)],
    
-    [s.Text('Created For Educational Purpose by:\nAgesXpat(agesxpat@gmail.com)')]
+    [s.Text('IBM Abdulsalam - For Educational Purpose', enable_events=True, key="redirect", tooltip="Click to view my profile")]
     ]
-win=s.Window('Calx v2.1',size=(300,540)).Layout(gui)
-#s.Window(
+win=s.Window('Calx v3.1',size=(320,540)).Layout(gui)
 key_entered=''
 while True:
     button, val=win.Read()
     try:
+        if button == "redirect":
+            wb.open("https://www.linkedin.com/in/ibmabdulsalam/")
+        if button == "Exit":
+            sys.exit()
+        if button == "Developer":
+            s.Popup(settings.DEVELOPER)
+        if button == "Versions":
+            s.Popup(settings.VERSIONS)
         if button is None:
             break
-        elif button == 'C':
+        if button == 'C':
             key_entered=''
-        elif button in '0123456789+-*/().':
+        if button in settings.LOOKS:
+            if change(settings.THEME, button):
+                sys.exit()
+        if button == 'CE':
+            key_entered=str(key_entered)[:-1]
+        elif button in settings.ALL_ALPHA:
             key_entered=val['inval']
             key_entered+=button
-        elif button in ['sin','cos','tan','log','e','pi', 'sqrt']:
+        elif button in settings.CONST_VAL:
+            key_entered+=str(eval(settings.CONST_VAL[button]))
+        elif button in settings.WAVE_FUNC:
             key_entered=val['inval']
             key_entered+=button
         elif button == 'ANS':
             try:
-                key_entered = eval(val['inval'])  
-            except NameError:
-                key_entered = eval('math.'+val['inval'])
-            #else:
-                #key_entered='Error'
-        elif key_entered == NameError and button =='C':
+                key_entered = key_entered.replace("x", "*")
+                key_entered = key_entered.replace("^", "**")
+                for k in settings.WAVE_FUNC:
+                    if k in key_entered:
+                        key_entered = key_entered.replace(k, settings.WAVE_FUNC.get(k))
+                        key_entered = key_entered
+            except Exception as e:
+                print(e)
+            finally:
+                key_entered = eval(key_entered)
+            
+        elif key_entered == NameError:
             key_entered=''
         else:
             key_entered=''
-    except AttributeError:
+    except [AttributeError, SyntaxError]:
+        key_entered='Error'
+
+    except TypeError:
+        key_entered=''
+        key_entered=val['inval']
+        
+    else:
         key_entered='Error'
         
-    except SyntaxError:
-        key_entered='Error'
-        
-    win.FindElement('inval').Update(key_entered)
+    win.find_element('inval').Update(key_entered)
