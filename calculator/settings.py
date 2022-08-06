@@ -9,7 +9,7 @@ LOOKS=(
     "DarkTeal10",
     "DarkBlack1"
     )
-FONT=('helvetica',10)
+FONT=('helvetica',15)
 CONSTANTS = ("pi", "e")
 BASIC = ["+", "-", "x"]
 SYMB = (".","(", ")")

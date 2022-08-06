@@ -4,7 +4,7 @@ import sys
 import webbrowser as wb
 size=(7,3)
 import settings
-MENU_COLOR = s.LOOK_AND_FEEL_TABLE[settings.THEME]
+
 def change(field, new_val):
     with open('settings.py') as f:
         tok = field
@@ -15,24 +15,36 @@ def change(field, new_val):
         with open('settings.py', "w+") as fw:
             fw.write(new_data)
             return 1
-        
-change_look=settings.THEME
+
+MENU_COLOR = s.LOOK_AND_FEEL_TABLE[settings.THEME]
+FIELD_LENGTH = len(settings.FIELDS)
+WAVE=settings.WAVE
+WAVE_FUNC=settings.WAVE_FUNC
+ARITHMETIC=settings.ARITHMETIC
+CONST_VAL=settings.CONST_VAL
+DEVELOPER=settings.DEVELOPER
+VERSIONS = settings.VERSIONS
+FIELDS = settings.FIELDS
+LOOKS = settings.LOOKS
+THEME=settings.THEME
+change_look=THEME
+
 s.change_look_and_feel(change_look)
 figures=[]
-for index, i in enumerate(range(0, len(settings.FIELDS), 3)):
-    x = [s.ReadButton(settings.FIELDS[j], size=size) for j in range(i, i+3)]
-    x+=[s.ReadButton(tuple(settings.ARITHMETIC)[index], size=size)]
+for index, i in enumerate(range(0, FIELD_LENGTH, 3)):
+    x = [s.ReadButton(FIELDS[j], size=size) for j in range(i, i+3)]
+    x+=[s.ReadButton(tuple(ARITHMETIC)[index], size=size)]
     figures.append(x)
 
 gui=[
-    [s.Menu([["Settings", ["theme",[settings.LOOKS], "Exit"]],
+    [s.Menu([["Settings", ["theme",[LOOKS], "Exit"]],
              ["About",["Developer", "Versions"]]
             ], background_color=MENU_COLOR['BACKGROUND'], text_color=MENU_COLOR['TEXT'])
             ],
-    [s.InputText('',key='inval', font=settings.FONT)],
+    [s.InputText('',key='inval', font=settings.FONT, size=(27, 3), pad=(5,15))],
     figures,
     [
-        s.ReadButton(w, size=size) for w in settings.WAVE
+        s.ReadButton(w, size=size) for w in WAVE
     ],
     [s.ReadButton('ANS', size=(16,3)),s.ReadButton('C', size=size),
     s.ReadButton('CE', size=size)],
@@ -49,33 +61,33 @@ while True:
         if button == "Exit":
             sys.exit()
         if button == "Developer":
-            s.Popup(settings.DEVELOPER)
+            s.Popup(DEVELOPER)
         if button == "Versions":
-            s.Popup(settings.VERSIONS)
+            s.Popup(VERSIONS)
         if button is None:
             break
         if button == 'C':
             key_entered=''
-        if button in settings.LOOKS:
-            if change(settings.THEME, button):
+        if button in LOOKS:
+            if change(THEME, button):
                 sys.exit()
         if button == 'CE':
             key_entered=str(key_entered)[:-1]
         elif button in settings.ALL_ALPHA:
             key_entered=val['inval']
             key_entered+=button
-        elif button in settings.CONST_VAL:
-            key_entered+=str(eval(settings.CONST_VAL[button]))
-        elif button in settings.WAVE_FUNC:
+        elif button in CONST_VAL:
+            key_entered+=str(eval(CONST_VAL[button]))
+        elif button in WAVE_FUNC:
             key_entered=val['inval']
             key_entered+=button
         elif button == 'ANS':
             try:
                 key_entered = key_entered.replace("x", "*")
                 key_entered = key_entered.replace("^", "**")
-                for k in settings.WAVE_FUNC:
+                for k in WAVE_FUNC:
                     if k in key_entered:
-                        key_entered = key_entered.replace(k, settings.WAVE_FUNC.get(k))
+                        key_entered = key_entered.replace(k, WAVE_FUNC.get(k))
                         key_entered = key_entered
             except Exception as e:
                 print(e)
