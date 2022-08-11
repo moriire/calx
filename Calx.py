@@ -2,34 +2,50 @@ import PySimpleGUI as s
 import math
 import sys
 import webbrowser as wb
-size=(7,3)
-import settings
 import os
-env_path = os.get_exec_path()[0]
-settings_path = f"..\\{env_path}\\Lib\\site-packages\\settings.py" 
-def change(field, new_val):
-    with open(settings_path) as f:
-        tok = field
-        data = f.read()
-        print(data)
-        new_data = data.replace(str(tok), str(new_val))
-        print(new_data)
-        with open(settings_path, "w+") as fw:
-            fw.write(new_data)
-            return 1
+env = os.environ
+import string
+import subprocess as sp
+size=(7,3)
 
-MENU_COLOR = s.LOOK_AND_FEEL_TABLE[settings.THEME]
-FIELD_LENGTH = len(settings.FIELDS)
-WAVE=settings.WAVE
-WAVE_FUNC=settings.WAVE_FUNC
-ARITHMETIC=settings.ARITHMETIC
-CONST_VAL=settings.CONST_VAL
-DEVELOPER=settings.DEVELOPER
-VERSIONS = settings.VERSIONS
-FIELDS = settings.FIELDS
-LOOKS = settings.LOOKS
-THEME=settings.THEME
-change_look=THEME
+LOOKS=(
+    "LightGreen6",
+    "DarkPurple4",
+    "DarkBlack1"
+    )
+FONT=('Helvetica', 25)#env.get("FONT")
+CONSTANTS = ("pi", "e")
+BASIC = ["+", "-", "x"]
+SYMB = (".","(", ")")
+SYMBOLS = {i: f"math.{i}" for i in SYMB}
+CONST_VAL = {i:f"math.{i}" for i in CONSTANTS}
+WAVE = ("sin", "cos", "tan", 'log', 'sqrt')
+WAVE_FUNC = {i: f"math.{i}" for i in WAVE}
+ARITHMETIC = {"+":"+", "-":"-", "x":"*", "/":"/","^":"**"}
+DIGITS = dict(zip(string.digits, string.digits))
+FIELDS = (*string.digits, *CONSTANTS, *SYMB)
+ALL_ALPHA = {**DIGITS, **ARITHMETIC, **SYMBOLS}
+DEVELOPER = """
+IBM Abdulsalam.
+linkedin: https://www.linkedin.com/in/ibmabdulsalam/
+facebook: https://www.facebook.com/ibmabdulsalam
+github: https://www.github.com/moriire
+"""
+VERSIONS = """
+IBM Abdulsalam.
+v3.2.0
+"""
+#print(env["THEME"])
+
+def change(field, new_val):
+    sp.run(['set',f"{field}={new_val}"], shell=True)
+    #os.putenv(field, new_val)
+    #env[field] = new_val
+    return 1
+
+MENU_COLOR = s.LOOK_AND_FEEL_TABLE[env["THEME"]]
+FIELD_LENGTH = len(FIELDS)
+change_look=env["THEME"]
 
 s.change_look_and_feel(change_look)
 figures=[]
@@ -43,7 +59,7 @@ gui=[
              ["About",["Developer", "Versions"]]
             ], background_color=MENU_COLOR['BACKGROUND'], text_color=MENU_COLOR['TEXT'])
             ],
-    [s.InputText('',key='inval', font=settings.FONT, size=(27, 3), pad=(5,15))],
+    [s.InputText('',key='inval', font=FONT, size=(27, 3), pad=(5,15))],
     figures,
     [
         s.ReadButton(w, size=size) for w in WAVE
@@ -53,7 +69,7 @@ gui=[
    
     [s.Text('IBM Abdulsalam - For Educational Purpose', enable_events=True, key="redirect", tooltip="Click to view my profile")]
     ]
-win=s.Window('Calx v3.1.0',size=(320,540)).Layout(gui)
+win=s.Window('Calx v3.1.0',size=(320,560)).Layout(gui)
 key_entered=''
 while True:
     button, val=win.Read()
@@ -71,13 +87,14 @@ while True:
         if button == 'C':
             key_entered=''
         if button in LOOKS:
-            if change(THEME, button):
+            if change("THEME", button):
+                print(button)
                 sys.exit()
         if button == 'CE':
             key_entered=str(key_entered)[:-1]
-        elif button in settings.ALL_ALPHA:
+        elif button in ALL_ALPHA:
             key_entered=val['inval']
-            key_entered+=button
+            key_entered+=str(button)
         elif button in CONST_VAL:
             key_entered+=str(eval(CONST_VAL[button]))
         elif button in WAVE_FUNC:
@@ -100,7 +117,8 @@ while True:
             key_entered=''
         else:
             key_entered=''
-    except (AttributeError, SyntaxError):
+    except (AttributeError, SyntaxError) as err:
+        print(err)
         key_entered='Error'
 
     except TypeError:
@@ -108,6 +126,7 @@ while True:
         key_entered=val['inval']
         
     except Exception:
+        key_entered=''
         continue
         
     win.find_element('inval').Update(key_entered)
