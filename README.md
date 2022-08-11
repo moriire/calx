@@ -1,8 +1,11 @@
 # Calx
-A sample calculator written in python for EDUCATIONAL PURPOSE.
+A sample calculator written in python.
 
   
-## Installation
+## Download
+### Windows
+
+### Linux
 You can download the source file, extract and run the calx.exe
 	-Or
 install using pip
