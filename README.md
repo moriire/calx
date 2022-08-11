@@ -1,16 +1,6 @@
 # Calx
 A sample calculator written in python.
 
-  
-## Download
-### Windows
-
-### Linux
-You can download the source file, extract and run the calx.exe
-	-Or
-install using pip
-
-
 ![care](https://github.com/moriire/Calx/blob/master/assets/pycal.PNG)
 
 #### Windows
