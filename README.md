@@ -1,8 +1,8 @@
 # Calx
 A sample calculator written in python.
-
+```sh
 ![care](https://github.com/moriire/Calx/blob/master/assets/pycal.PNG)
-
+```
 ## Downloads
 
 #### Windows
