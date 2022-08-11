@@ -8,7 +8,7 @@ You can download the source file, extract and run the calx.exe
 install using pip
 
 
-[!care]('https://github.com/moriire/Calx/blob/master/assets/pycal.PNG')
+[!care](!'https://github.com/moriire/Calx/blob/master/assets/pycal.PNG')
 
 #### Windows
 ```sh
