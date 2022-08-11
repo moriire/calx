@@ -7,9 +7,9 @@ A sample calculator written in python.
 
 #### Windows
 
-```sh
--  [calx-v3.2.1](https://github.com/moriire/Calx/blob/master/calx-v3.2.1.exe)
-```
+
+[calx-v3.2.1](https://github.com/moriire/Calx/blob/master/calx-v3.2.1.exe)
+
 #### Mac or Linux
 ```sh
 sudo pip install Calx
