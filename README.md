@@ -11,4 +11,4 @@ A sample calculator written in python.
 #### Mac or Linux
 
 
-[Calx-3.2.1](https://github.com/moriire/Calx/blob/master/dist/calx-3.2.1?raw=true)
+[Calx-3.2.1](https://github.com/moriire/Calx/blob/master/dist/calx-v3.2.1?raw=true)
