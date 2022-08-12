@@ -1,5 +1,5 @@
 # Calx
-A sample calculator written in python.
+A simple calculator written in python.
 
 ![python calx](https://github.com/moriire/Calx/blob/master/assets/pycal.PNG)
 
