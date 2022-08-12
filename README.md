@@ -12,3 +12,6 @@ A sample calculator written in python.
 
 
 [Calx-3.2.1](https://github.com/moriire/Calx/blob/master/dist/calx-v3.2.1?raw=true)
+
+#### Source code
+[source](https://github.com/moriire/Calx/blob/master/calx-v3.2.1.pyw)
